@@ -56,7 +56,7 @@ Es tracta d'un joc de **plataformes** clàssic, on el jugador controla a Mario p
 ---
 
 ## 🛠️ Requisits Tècnics
-- **Python** 3.x
+- **Python** 3.12
 - **PyGame** (poden instal·lar-lo amb `pip install pygame`)
 
 ---
