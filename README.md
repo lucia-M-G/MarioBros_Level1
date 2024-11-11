@@ -1,11 +1,12 @@
 # 🎮 Mario Bros - Nivell 1 (Python Game) 
 **24-25-python-game-lucia-M-G created by GitHub Classroom**  
+
 Faré aquest projecte utilitzant PyGame. Inspirat en el primer nivell del clàssic joc de **Super Mario Bros**, és un joc de plataformes on el jugador controla a Mario mentre recull monedes, derrota enemics, i arriba a la bandera per completar el nivell.
 
 ---
 
 ## 🎯 Objectiu del Joc
-L'objectiu principal és guiar a Mario a través del nivell, evitant obstacles, derrotant enemics, i arribant a la bandera final. Pots recollir monedes, obtenir power-ups i superar reptes.
+L'objectiu principal és guiar a Mario a través del nivell, evitant obstacles, derrotant enemics, i arribant a la bandera final. Pots recollir monedes.
 
 ---
 
@@ -22,20 +23,19 @@ Es tracta d'un joc de **plataformes** clàssic, on el jugador controla a Mario p
 
 - **Interacció amb Blocs:**
   - **Blocs de monedes**: Mario obté una moneda per cada bloc trencat.
-  - **Blocs sorpresa**: Poden contenir monedes, flors de foc o bolets de creixement.
+  - **Blocs sorpresa**: Poden contenir monedes, o no contenir-hi res.
 
 - **Enemics:**
-  - **Goombas**: Enemics comuns; Mario pot eliminar-los saltant-hi a sobre.
-  - **Koopas**: Mario pot fer-los fora de la closca, usant-la per eliminar altres enemics o trencar blocs.
-
+  - **Goombas**: Mario pot eliminar-los saltant-hi a sobre.
+ 
 ---
 
 ### 3. GRÀFICS I SO
 - **Gràfics:**
   - **Sprites de Mario**: Inclouen animacions per a córrer, saltar, etc.
-  - **Enemics**: Sprites de Goombas, Koopas, etc.
-  - **Escenari**: Fons del nivell, blocs, canonades, arbres i muntanyes de fons.
-  - **Objectes**: Monedes, bolets i flors de foc.
+  - **Enemics**: Sprites de Goombas.
+  - **Escenari**: Fons del nivell i blocs.
+  - **Objectes**: Monedes.
 
 - **So:**
   - 🎶 **Música de fons**: Música clàssica del primer nivell de Super Mario Bros.
@@ -46,9 +46,8 @@ Es tracta d'un joc de **plataformes** clàssic, on el jugador controla a Mario p
 ### 4. ESTRUCTURA DEL NIVELL
 - **Escena Principal (Nivell 1):**
   - Mario comença a l'esquerra de la pantalla i ha d'arribar a la bandera.
-  - Plataformes, blocs sorpresa, blocs de monedes i canonades.
-  - Enemics com Goombas i Koopas apareixen progressivament per introduir mecàniques de joc.
-  - Col·locació de power-ups com bolets i flors de foc per ajudar al jugador.
+  - Plataformes, blocs sorpresa i blocs de monedes.
+  - Els enemics apareixen progressivament per introduir mecàniques de joc.
 
 - **Escena Final:**
   - Quan Mario arriba a la bandera, el nivell es completa amb l'animació de la plataforma.
