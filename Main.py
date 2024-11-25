@@ -1,4 +1,5 @@
 import pygame
+pygame.__version__
 import sys
 
 # Inicializar Pygame
