@@ -28,3 +28,6 @@ plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
                pygame.Rect(200, ALTO - 100, 100, 20),
                pygame.Rect(400, ALTO - 200, 100, 20),
                pygame.Rect(600, ALTO - 150, 150, 20)]
+
+# Bandera final
+bandera = pygame.Rect(700, ALTO - 70, 20, 70)
