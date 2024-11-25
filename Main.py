@@ -22,3 +22,9 @@ velocidad_mario = 5
 gravedad = 0.5
 vel_y = 0
 en_suelo = True
+
+# Plataforma
+plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
+               pygame.Rect(200, ALTO - 100, 100, 20),
+               pygame.Rect(400, ALTO - 200, 100, 20),
+               pygame.Rect(600, ALTO - 150, 150, 20)]
