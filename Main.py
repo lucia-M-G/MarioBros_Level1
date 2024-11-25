@@ -63,6 +63,20 @@ class Mario(pygame.sprite.Sprite):
             self.rect.y = HEIGHT - 100
             self.is_jumping = False
 
+# Clase enemigo
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = enemy_img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        self.rect.x -= 2  # Movimiento hacia la izquierda
+        if self.rect.right < 0:
+            self.rect.left = WIDTH
+
 # Plataforma
 plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
                pygame.Rect(200, ALTO - 100, 100, 20),
