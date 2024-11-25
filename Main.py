@@ -35,3 +35,19 @@ plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
 
 # Bandera final
 bandera = pygame.Rect(700, ALTO - 70, 20, 70)
+
+# Función para dibujar
+def dibujar():
+    screen.fill(BLANCO)
+
+    # Dibujar plataformas
+    for plataforma in plataformas:
+        pygame.draw.rect(screen, NEGRO, plataforma)
+
+    # Dibujar Mario
+    pygame.draw.rect(screen, ROJO, mario)
+
+    # Dibujar Bandera
+    pygame.draw.rect(screen, AZUL, bandera)
+
+    pygame.display.flip()
