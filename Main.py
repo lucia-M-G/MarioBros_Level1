@@ -77,6 +77,15 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.rect.left = WIDTH
 
+# Clase bloque
+class Block(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = block_img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
 # Plataforma
 plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
                pygame.Rect(200, ALTO - 100, 100, 20),
