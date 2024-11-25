@@ -80,3 +80,15 @@ while True:
             mario.y = plataforma.y - mario.height
             vel_y = 0
             en_suelo = True
+
+    # Colisiones con la bandera
+    if mario.colliderect(bandera):
+        print("¡Nivel completado!")
+        pygame.quit()
+        sys.exit()
+
+    # Límite de la pantalla
+    if mario.x < 0:
+        mario.x = 0
+    if mario.x > ANCHO - mario.width:
+        mario.x = ANCHO - mario.width
