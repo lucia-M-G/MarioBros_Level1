@@ -18,12 +18,50 @@ BLUE = (135, 206, 235)
 FPS = 60
 clock = pygame.time.Clock()
 
-# Mario (jugador)
-mario = pygame.Rect(50, ALTO - 70, 40, 50)
-velocidad_mario = 5
-gravedad = 0.5
-vel_y = 0
-en_suelo = True
+# Cargar recursos
+mario_img = pygame.image.load("assets/images/mario.png")
+enemy_img = pygame.image.load("assets/images/enemy.png")
+block_img = pygame.image.load("assets/images/block.png")
+
+jump_sound = pygame.mixer.Sound("assets/sounds/jump.wav")
+theme_music = "assets/sounds/theme.mp3"
+
+# Iniciar música de fondo
+pygame.mixer.music.load(theme_music)
+pygame.mixer.music.play(-1)
+
+# Clase Mario
+class Mario(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = mario_img
+        self.rect = self.image.get_rect()
+        self.rect.x = 100
+        self.rect.y = HEIGHT - 100
+        self.vel_y = 0
+        self.is_jumping = False
+
+    def update(self, keys):
+        # Movimiento a la derecha e izquierda
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 5
+
+        # Salto
+        if keys[pygame.K_SPACE] and not self.is_jumping:
+            jump_sound.play()
+            self.is_jumping = True
+            self.vel_y = -15
+
+        # Gravedad
+        self.vel_y += 1
+        self.rect.y += self.vel_y
+
+        # Limitar posición vertical
+        if self.rect.y >= HEIGHT - 100:
+            self.rect.y = HEIGHT - 100
+            self.is_jumping = False
 
 # Plataforma
 plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
