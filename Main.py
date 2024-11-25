@@ -90,6 +90,10 @@ class Block(pygame.sprite.Sprite):
 mario = Mario()
 enemy = Enemy(600, HEIGHT - 100)
 block = Block(300, HEIGHT - 150)
+
+# Grupos de sprites
+all_sprites = pygame.sprite.Group()
+all_sprites.add(mario, enemy, block)
     
 # Bucle principal del juego
 while True:
