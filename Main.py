@@ -90,31 +90,6 @@ class Block(pygame.sprite.Sprite):
 mario = Mario()
 enemy = Enemy(600, HEIGHT - 100)
 block = Block(300, HEIGHT - 150)
-
-# Plataforma
-plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
-               pygame.Rect(200, ALTO - 100, 100, 20),
-               pygame.Rect(400, ALTO - 200, 100, 20),
-               pygame.Rect(600, ALTO - 150, 150, 20)]
-
-# Bandera final
-bandera = pygame.Rect(700, ALTO - 70, 20, 70)
-
-# Función para dibujar
-def dibujar():
-    screen.fill(BLANCO)
-
-    # Dibujar plataformas
-    for plataforma in plataformas:
-        pygame.draw.rect(screen, NEGRO, plataforma)
-
-    # Dibujar Mario
-    pygame.draw.rect(screen, ROJO, mario)
-
-    # Dibujar Bandera
-    pygame.draw.rect(screen, AZUL, bandera)
-
-    pygame.display.flip()
     
 # Bucle principal del juego
 while True:
