@@ -86,6 +86,11 @@ class Block(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+# Instanciar objetos
+mario = Mario()
+enemy = Enemy(600, HEIGHT - 100)
+block = Block(300, HEIGHT - 150)
+
 # Plataforma
 plataformas = [pygame.Rect(0, ALTO - 20, ANCHO, 20),
                pygame.Rect(200, ALTO - 100, 100, 20),
