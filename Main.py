@@ -92,3 +92,6 @@ while True:
         mario.x = 0
     if mario.x > ANCHO - mario.width:
         mario.x = ANCHO - mario.width
+    
+    dibujar()
+    clock.tick(FPS)
