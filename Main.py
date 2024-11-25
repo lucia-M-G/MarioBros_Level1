@@ -51,3 +51,32 @@ def dibujar():
     pygame.draw.rect(screen, AZUL, bandera)
 
     pygame.display.flip()
+    
+# Bucle principal del juego
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # Controles de Mario
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        mario.x -= velocidad_mario
+    if keys[pygame.K_RIGHT]:
+        mario.x += velocidad_mario
+    if keys[pygame.K_SPACE] and en_suelo:
+        vel_y = -10
+        en_suelo = False
+
+    # Aplicar gravedad
+    vel_y += gravedad
+    mario.y += vel_y
+
+    # Colisiones con el suelo y plataformas
+    en_suelo = False
+    for plataforma in plataformas:
+        if mario.colliderect(plataforma) and vel_y > 0:
+            mario.y = plataforma.y - mario.height
+            vel_y = 0
+            en_suelo = True
