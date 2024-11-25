@@ -16,6 +16,10 @@ NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 AZUL = (0, 0, 255)
 
+# Velocidad del juego
+FPS = 60
+clock = pygame.time.Clock()
+
 # Mario (jugador)
 mario = pygame.Rect(50, ALTO - 70, 40, 50)
 velocidad_mario = 5
