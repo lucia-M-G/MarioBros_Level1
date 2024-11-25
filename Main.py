@@ -95,46 +95,23 @@ block = Block(300, HEIGHT - 150)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(mario, enemy, block)
     
-# Bucle principal del juego
+# Bucle principal
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-    # Controles de Mario
+    # Entrada del teclado
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        mario.x -= velocidad_mario
-    if keys[pygame.K_RIGHT]:
-        mario.x += velocidad_mario
-    if keys[pygame.K_SPACE] and en_suelo:
-        vel_y = -10
-        en_suelo = False
 
-    # Aplicar gravedad
-    vel_y += gravedad
-    mario.y += vel_y
+    # Actualizar sprites
+    all_sprites.update()
+    mario.update(keys)
 
-    # Colisiones con el suelo y plataformas
-    en_suelo = False
-    for plataforma in plataformas:
-        if mario.colliderect(plataforma) and vel_y > 0:
-            mario.y = plataforma.y - mario.height
-            vel_y = 0
-            en_suelo = True
+    # Dibujar todo
+    screen.fill(BLUE)  # Fondo
+    all_sprites.draw(screen)
 
-    # Colisiones con la bandera
-    if mario.colliderect(bandera):
-        print("¡Nivel completado!")
-        pygame.quit()
-        sys.exit()
-
-    # Límite de la pantalla
-    if mario.x < 0:
-        mario.x = 0
-    if mario.x > ANCHO - mario.width:
-        mario.x = ANCHO - mario.width
-    
-    dibujar()
+    pygame.display.flip()
     clock.tick(FPS)
