@@ -11,10 +11,8 @@ screen = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Mario Bros - Nivel 1")
 
 # Colores
-BLANCO = (255, 255, 255)
-NEGRO = (0, 0, 0)
-ROJO = (255, 0, 0)
-AZUL = (0, 0, 255)
+WHITE = (255, 255, 255)
+BLUE = (135, 206, 235)
 
 # Velocidad del juego
 FPS = 60
