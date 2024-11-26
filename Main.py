@@ -10,10 +10,6 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mario Bros - Nivel 1")
 
-# Colores
-WHITE = (255, 255, 255)
-BLUE = (135, 206, 235)
-
 # Velocidad del juego
 FPS = 60
 clock = pygame.time.Clock()
@@ -50,6 +46,8 @@ class Mario(pygame.sprite.Sprite):
         self.rect.y = HEIGHT - 100
         self.vel_y = 0
         self.is_jumping = False
+        self.gravity = 1
+        self.jump_speed = -15
 
     def update(self):
         # Mover la captura de teclas aquí
@@ -62,19 +60,28 @@ class Mario(pygame.sprite.Sprite):
             self.rect.x += 5
 
         # Salto
-        if keys[pygame.K_SPACE] and not self.is_jumping:
+        if keys[pygame.K_UP] and not self.is_jumping:
             jump_sound.play()
             self.is_jumping = True
-            self.vel_y = -15
+            self.vel_y = self.jump_speed
 
         # Gravedad
-        self.vel_y += 1
-        self.rect.y += self.vel_y
+        if self.is_jumping:
+            # Aumentar la velocidad de caída (gravedad)
+            self.vel_y += self.gravity
+            
+        self.rect.y += self.vel_y  # Actualizar la posición vertical de Mario
 
         # Limitar posición vertical
-        if self.rect.y >= HEIGHT - 100:
-            self.rect.y = HEIGHT - 100
+        if self.rect.bottom >= HEIGHT - 50:
+            self.rect.bottom = HEIGHT - 50
             self.is_jumping = False
+            self.vel_y = 0
+        
+        # Asegurarse de que Mario no salga de la pantalla por arriba
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.vel_y = 0 
 
 # Clase enemigo
 class Enemy(pygame.sprite.Sprite):
