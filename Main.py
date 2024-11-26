@@ -55,9 +55,9 @@ class Mario(pygame.sprite.Sprite):
 
         # Movimiento a la derecha e izquierda
         if keys[pygame.K_LEFT]:
-            self.rect.x -= 5
+            self.rect.x -= 2
         if keys[pygame.K_RIGHT]:
-            self.rect.x += 5
+            self.rect.x += 2
 
         # Salto
         if keys[pygame.K_UP] and not self.is_jumping:
@@ -93,7 +93,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = y
 
     def update(self):
-        self.rect.x -= 2  # Movimiento hacia la izquierda
+        self.rect.x -= 1  # Movimiento hacia la izquierda
         if self.rect.right < 0:
             self.rect.left = WIDTH
 
