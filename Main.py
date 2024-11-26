@@ -7,7 +7,7 @@ pygame.init()
 
 # Configuración de la pantalla
 WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((ANCHO, ALTO))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mario Bros - Nivel 1")
 
 # Colores
@@ -19,12 +19,22 @@ FPS = 60
 clock = pygame.time.Clock()
 
 # Cargar recursos
-mario_img = pygame.image.load("assets/images/mario.png")
-enemy_img = pygame.image.load("assets/images/enemy.png")
-block_img = pygame.image.load("assets/images/block.png")
+try:
+    mario_img = pygame.image.load("assets/images/mario.png")
+    enemy_img = pygame.image.load("assets/images/enemy.png")
+    block_img = pygame.image.load("assets/images/block.png")
+    background_img = pygame.image.load("assets/images/background.png")
 
-jump_sound = pygame.mixer.Sound("assets/sounds/jump.wav")
-theme_music = "assets/sounds/theme.mp3"
+    jump_sound = pygame.mixer.Sound("assets/sounds/jump.wav")
+    theme_music = "assets/sounds/theme.mp3"
+except pygame.error as e:
+    print(f"Error cargando recursos: {e}")
+    sys.exit()
+
+# Escalar imágenes
+mario_img = pygame.transform.scale(mario_img, (50, 50))  # Ajusta el tamaño de Mario
+enemy_img = pygame.transform.scale(enemy_img, (35, 35))  # Ajusta el tamaño de los enemigos
+block_img = pygame.transform.scale(block_img, (50, 50))  # Ajusta el tamaño de los bloques
 
 # Iniciar música de fondo
 pygame.mixer.music.load(theme_music)
@@ -41,7 +51,10 @@ class Mario(pygame.sprite.Sprite):
         self.vel_y = 0
         self.is_jumping = False
 
-    def update(self, keys):
+    def update(self):
+        # Mover la captura de teclas aquí
+        keys = pygame.key.get_pressed()
+
         # Movimiento a la derecha e izquierda
         if keys[pygame.K_LEFT]:
             self.rect.x -= 5
@@ -88,7 +101,7 @@ class Block(pygame.sprite.Sprite):
 
 # Instanciar objetos
 mario = Mario()
-enemy = Enemy(600, HEIGHT - 100)
+enemy = Enemy(600, HEIGHT - 82)
 block = Block(300, HEIGHT - 150)
 
 # Grupos de sprites
@@ -102,16 +115,13 @@ while True:
             pygame.quit()
             sys.exit()
 
-    # Entrada del teclado
-    keys = pygame.key.get_pressed()
+    # Dibujar fondo
+    screen.blit(background_img, (0, 0))
 
     # Actualizar sprites
     all_sprites.update()
-    mario.update(keys)
-
-    # Dibujar todo
-    screen.fill(BLUE)  # Fondo
     all_sprites.draw(screen)
-
+    mario.update()
+    
     pygame.display.flip()
     clock.tick(FPS)
