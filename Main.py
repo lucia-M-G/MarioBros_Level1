@@ -49,6 +49,8 @@ class Mario(pygame.sprite.Sprite):
         self.gravity = 1
         self.jump_speed = -15
         self.speed = 2.5
+        # Contador de saltos
+        self.jump_count = 0
 
     def update(self, blocks):
         is_below_block = False
@@ -75,6 +77,7 @@ class Mario(pygame.sprite.Sprite):
                 jump_sound.play()
                 self.is_jumping = True
                 self.vel_y = self.jump_speed
+                self.jump_count += 1
 
         # Gravedad
         if self.is_jumping:
@@ -99,6 +102,7 @@ class Mario(pygame.sprite.Sprite):
                     self.vel_y = 0
                     # Indica que Mario está en un bloque
                     is_below_block = True
+                    self.jump_count = 0
                     # Salimos del bucle si hay colisión
                     break
 
@@ -111,6 +115,7 @@ class Mario(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT - 50
             self.is_jumping = False
             self.vel_y = 0
+            self.jump_count = 0
         
         # Limitar posición horizontal
         if self.rect.top < 0:
@@ -138,8 +143,11 @@ class Block(pygame.sprite.Sprite):
         super().__init__()
         self.image = block_img
         self.rect = self.image.get_rect()
-        self.rect.x = x
+        self.rect.x = x - 60
         self.rect.y = y
+
+        # Ajustar el ancho del rectángulo de colisión
+        self.rect.width -= 10
 
 # Instanciar objetos
 mario = Mario()
