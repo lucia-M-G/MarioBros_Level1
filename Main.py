@@ -67,7 +67,7 @@ class Mario(pygame.sprite.Sprite):
         self.vel_y = 0
         self.is_jumping = False
         self.gravity = 1
-        self.jump_speed = -15
+        self.jump_speed = -20
         self.speed = 2.5
         # Contador de saltos
         self.jump_count = 0
@@ -96,7 +96,7 @@ class Mario(pygame.sprite.Sprite):
             if self.facing_right:
                 self.image = self.standing_right_image
             else:
-                self.standing_left_image
+                self.image = self.standing_left_image
 
         # Verificar si hay un bloque debajo de Mario
         for block in blocks:
