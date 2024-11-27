@@ -16,11 +16,17 @@ clock = pygame.time.Clock()
 
 # Cargar recursos
 try:
-    standing_image = pygame.image.load("assets/images/mario_standing.png")
-    jumping_image = pygame.image.load("assets/images/mario_jumping.png")
-    running_images = [
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1.png"), (50, 50)),
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2.png"), (50, 50))
+    standing_right_image = pygame.image.load("assets/images/mario_right_standing.png")
+    standing_left_image = pygame.image.load("assets/images/mario_left_standing.png")
+    jumping_right_image = pygame.image.load("assets/images/mario_right_jumping.png")
+    jumping_left_image = pygame.image.load("assets/images/mario_left_jumping.png")
+    running_right_images = [
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_right.png"), (50, 50)),
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_right.png"), (50, 50))
+        ]
+    running_left_images = [
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_left.png"), (50, 50)),
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_left.png"), (50, 50))
         ]
     enemy_img = pygame.image.load("assets/images/enemy.png")
     block_img = pygame.image.load("assets/images/block.png")
@@ -33,8 +39,10 @@ except pygame.error as e:
     sys.exit()
 
 # Escalar imágenes
-standing_image = pygame.transform.scale(standing_image, (50, 50))
-jumping_image = pygame.transform.scale(jumping_image, (50, 50))
+standing_right_image = pygame.transform.scale(standing_right_image, (50, 50))
+standing_left_image = pygame.transform.scale(standing_left_image, (50, 50))
+jumping_right_image = pygame.transform.scale(jumping_right_image, (50, 50))
+jumping_left_image = pygame.transform.scale(jumping_left_image, (50, 50))
 enemy_img = pygame.transform.scale(enemy_img, (35, 35))
 block_img = pygame.transform.scale(block_img, (50, 50))
 
@@ -46,10 +54,13 @@ pygame.mixer.music.play(-1)
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.standing_image = standing_image
-        self.jumping_image = jumping_image
-        self.running_images = running_images
-        self.image = self.standing_image
+        self.standing_right_image = standing_right_image
+        self.jumping_right_image = jumping_right_image
+        self.running_right_images = running_right_images
+        self.standing_left_image = standing_left_image
+        self.jumping_left_image = jumping_left_image
+        self.running_left_images = running_left_images
+        self.image = self.standing_right_image
         self.rect = self.image.get_rect()
         self.rect.x = 70
         self.rect.y = HEIGHT - 100
@@ -61,7 +72,8 @@ class Mario(pygame.sprite.Sprite):
         # Contador de saltos
         self.jump_count = 0
         self.running_index = 0
-        self.animation_timer = 0 
+        self.animation_timer = 0
+        self.facing_right = True
 
     def update(self, blocks):
         is_below_block = False
@@ -72,12 +84,19 @@ class Mario(pygame.sprite.Sprite):
         # Movimiento a la derecha e izquierda
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
+            # Mario está mirando a la izquierda
+            self.facing_right = False
             self.update_running_animation()
         elif keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
+            # Mario está mirando a la derecha
+            self.facing_right = True 
             self.update_running_animation()
         else:
-            self.image = self.standing_image
+            if self.facing_right:
+                self.image = self.standing_right_image
+            else:
+                self.standing_left_image
 
         # Verificar si hay un bloque debajo de Mario
         for block in blocks:
@@ -98,7 +117,10 @@ class Mario(pygame.sprite.Sprite):
         if self.is_jumping:
             # Aplica gravedad
             self.vel_y += self.gravity
-            self.image = self.jumping_image
+            if self.facing_right:
+                self.image = self.jumping_right_image
+            else:
+                self.jumping_left_image
         
         # Actualizar la posición vertical de Mario
         self.rect.y += self.vel_y
@@ -141,9 +163,14 @@ class Mario(pygame.sprite.Sprite):
     def update_running_animation(self):
         # Cambiar la imagen de correr
         self.animation_timer += 1
-        if self.animation_timer >= 10:  # Cambiar cada 10 frames
-            self.running_index = (self.running_index + 1) % len(self.running_images)
-            self.image = self.running_images[self.running_index]
+        # Cambiar cada 10 frames
+        if self.animation_timer >= 7:
+            self.running_index = (self.running_index + 1) % len(self.running_right_images)
+            if self.facing_right:
+                self.image = self.running_right_images[self.running_index]
+            else:
+                # Usar imágenes para la izquierda
+                self.image = self.running_left_images[self.running_index]
             self.animation_timer = 0
 
 # Clase enemigo
