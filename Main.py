@@ -16,7 +16,12 @@ clock = pygame.time.Clock()
 
 # Cargar recursos
 try:
-    mario_img = pygame.image.load("assets/images/mario.png")
+    standing_image = pygame.image.load("assets/images/mario_standing.png")
+    jumping_image = pygame.image.load("assets/images/mario_jumping.png")
+    running_images = [
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1.png"), (50, 50)),
+            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2.png"), (50, 50))
+        ]
     enemy_img = pygame.image.load("assets/images/enemy.png")
     block_img = pygame.image.load("assets/images/block.png")
     background_img = pygame.image.load("assets/images/background.png")
@@ -28,9 +33,10 @@ except pygame.error as e:
     sys.exit()
 
 # Escalar imágenes
-mario_img = pygame.transform.scale(mario_img, (50, 50))  # Ajusta el tamaño de Mario
-enemy_img = pygame.transform.scale(enemy_img, (35, 35))  # Ajusta el tamaño de los enemigos
-block_img = pygame.transform.scale(block_img, (50, 50))  # Ajusta el tamaño de los bloques
+standing_image = pygame.transform.scale(standing_image, (50, 50))
+jumping_image = pygame.transform.scale(jumping_image, (50, 50))
+enemy_img = pygame.transform.scale(enemy_img, (35, 35))
+block_img = pygame.transform.scale(block_img, (50, 50))
 
 # Iniciar música de fondo
 pygame.mixer.music.load(theme_music)
@@ -40,9 +46,12 @@ pygame.mixer.music.play(-1)
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = mario_img
+        self.standing_image = standing_image
+        self.jumping_image = jumping_image
+        self.running_images = running_images
+        self.image = self.standing_image
         self.rect = self.image.get_rect()
-        self.rect.x = 100
+        self.rect.x = 70
         self.rect.y = HEIGHT - 100
         self.vel_y = 0
         self.is_jumping = False
@@ -51,6 +60,8 @@ class Mario(pygame.sprite.Sprite):
         self.speed = 2.5
         # Contador de saltos
         self.jump_count = 0
+        self.running_index = 0
+        self.animation_timer = 0 
 
     def update(self, blocks):
         is_below_block = False
@@ -61,8 +72,12 @@ class Mario(pygame.sprite.Sprite):
         # Movimiento a la derecha e izquierda
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT]:
+            self.update_running_animation()
+        elif keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
+            self.update_running_animation()
+        else:
+            self.image = self.standing_image
 
         # Verificar si hay un bloque debajo de Mario
         for block in blocks:
@@ -72,17 +87,18 @@ class Mario(pygame.sprite.Sprite):
         
         # Salto
         if keys[pygame.K_UP] and not self.is_jumping:
-            # Verificar si NO está debajo de un bloque
-            if not is_below_block:
-                jump_sound.play()
-                self.is_jumping = True
-                self.vel_y = self.jump_speed
-                self.jump_count += 1
-
+            # Permitir hasta 2 saltos
+            if self.jump_count < 2:
+                if not is_below_block or self.jump_count > 0:
+                    jump_sound.play()
+                    self.is_jumping = True
+                    self.vel_y = self.jump_speed
+                    self.jump_count += 1 
         # Gravedad
         if self.is_jumping:
             # Aplica gravedad
-            self.vel_y += self.gravity 
+            self.vel_y += self.gravity
+            self.image = self.jumping_image
         
         # Actualizar la posición vertical de Mario
         self.rect.y += self.vel_y
@@ -120,7 +136,15 @@ class Mario(pygame.sprite.Sprite):
         # Limitar posición horizontal
         if self.rect.top < 0:
             self.rect.top = 0
-            self.vel_y = 0 
+            self.vel_y = 0
+            
+    def update_running_animation(self):
+        # Cambiar la imagen de correr
+        self.animation_timer += 1
+        if self.animation_timer >= 10:  # Cambiar cada 10 frames
+            self.running_index = (self.running_index + 1) % len(self.running_images)
+            self.image = self.running_images[self.running_index]
+            self.animation_timer = 0
 
 # Clase enemigo
 class Enemy(pygame.sprite.Sprite):
