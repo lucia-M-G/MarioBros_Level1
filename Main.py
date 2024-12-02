@@ -21,14 +21,17 @@ try:
     jumping_right_image = pygame.image.load("assets/images/mario_right_jumping.png")
     jumping_left_image = pygame.image.load("assets/images/mario_left_jumping.png")
     running_right_images = [
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_right.png"), (50, 50)),
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_right.png"), (50, 50))
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_right.png"), (50, 50)),
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_right.png"), (50, 50))
         ]
     running_left_images = [
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_left.png"), (50, 50)),
-            pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_left.png"), (50, 50))
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_left.png"), (50, 50)),
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_left.png"), (50, 50))
         ]
-    enemy_img = pygame.image.load("assets/images/enemy.png")
+    enemy_img = [
+        pygame.transform.scale(pygame.image.load("assets/images/enemy1.png"), (35, 35)),
+        pygame.transform.scale(pygame.image.load("assets/images/enemy2.png"), (35, 35))
+        ]
     block_img = pygame.image.load("assets/images/block.png")
     background_img = pygame.image.load("assets/images/background.png")
 
@@ -43,7 +46,6 @@ standing_right_image = pygame.transform.scale(standing_right_image, (50, 50))
 standing_left_image = pygame.transform.scale(standing_left_image, (50, 50))
 jumping_right_image = pygame.transform.scale(jumping_right_image, (50, 50))
 jumping_left_image = pygame.transform.scale(jumping_left_image, (50, 50))
-enemy_img = pygame.transform.scale(enemy_img, (35, 35))
 block_img = pygame.transform.scale(block_img, (50, 50))
 
 # Iniciar música de fondo
@@ -63,7 +65,7 @@ class Mario(pygame.sprite.Sprite):
         self.image = self.standing_right_image
         self.rect = self.image.get_rect()
         self.rect.x = 70
-        self.rect.y = HEIGHT - 100
+        self.rect.y = 0
         self.vel_y = 0
         self.is_jumping = False
         self.gravity = 1
@@ -177,16 +179,29 @@ class Mario(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = enemy_img
+        self.walking_images = enemy_img
+        # Iniciar con la primera imagen
+        self.image = self.walking_images[0]
         self.rect = self.image.get_rect()
         self.rect.x = x
-        self.rect.y = y
+        self.rect.y = y - 3
+        self.animation_timer = 0
+        self.walking_index = 0
 
     def update(self):
         # Movimiento hacia la izquierda
         self.rect.x -= 1
         if self.rect.right < 0:
             self.rect.left = WIDTH
+
+        # Actualizar animación de caminar
+        self.animation_timer += 1
+        # Cambia cada 20 frames
+        if self.animation_timer >= 25: 
+            # len(self.walking_images) = numero de imagenes para el movimiento animado
+            self.walking_index = (self.walking_index + 1) % len(self.walking_images)
+            self.image = self.walking_images[self.walking_index]
+            self.animation_timer = 0
 
 # Clase bloque
 class Block(pygame.sprite.Sprite):
