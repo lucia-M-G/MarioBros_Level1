@@ -42,8 +42,8 @@ except pygame.error as e:
     sys.exit()
 
 # Escalar imágenes
-standing_right_image = pygame.transform.scale(standing_right_image, (50, 50))
-standing_left_image = pygame.transform.scale(standing_left_image, (50, 50))
+standing_right_image = pygame.transform.scale(standing_right_image, (40, 50))
+standing_left_image = pygame.transform.scale(standing_left_image, (40, 50))
 jumping_right_image = pygame.transform.scale(jumping_right_image, (50, 50))
 jumping_left_image = pygame.transform.scale(jumping_left_image, (50, 50))
 block_img = pygame.transform.scale(block_img, (50, 50))
