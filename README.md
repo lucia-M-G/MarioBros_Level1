@@ -59,4 +59,4 @@ Es tracta d'un joc de **plataformes** clàssic, on el jugador controla a Mario p
 ## 🚀 Com Iniciar el Joc
 1. Clona aquest repositori:
    ```bash
-   git clone https://github.com/tuusuariogithub/24-25-python-game-lucia-M-G.git
+   git clone https://github.com/lucia-M-G/MarioBros_Level1.git
