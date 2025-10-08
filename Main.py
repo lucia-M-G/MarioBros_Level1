@@ -22,11 +22,13 @@ try:
     jumping_left_image = pygame.image.load("assets/images/mario_left_jumping.png")
     running_right_images = [
         pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_right.png"), (50, 50)),
-        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_right.png"), (50, 50))
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_right.png"), (50, 50)),
+        standing_right_image
         ]
     running_left_images = [
         pygame.transform.scale(pygame.image.load("assets/images/mario_running_1_left.png"), (50, 50)),
-        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_left.png"), (50, 50))
+        pygame.transform.scale(pygame.image.load("assets/images/mario_running_2_left.png"), (50, 50)),
+        standing_left_image
         ]
     enemy_img = [
         pygame.transform.scale(pygame.image.load("assets/images/enemy1.png"), (35, 35)),
@@ -36,14 +38,16 @@ try:
     background_img = pygame.image.load("assets/images/background.png")
 
     jump_sound = pygame.mixer.Sound("assets/sounds/jump.wav")
+    # Establecer el volumen a 20%
+    jump_sound.set_volume(0.2)
     theme_music = "assets/sounds/theme.mp3"
 except pygame.error as e:
     print(f"Error cargando recursos: {e}")
     sys.exit()
 
 # Escalar imágenes
-standing_right_image = pygame.transform.scale(standing_right_image, (40, 50))
-standing_left_image = pygame.transform.scale(standing_left_image, (40, 50))
+standing_right_image = pygame.transform.scale(standing_right_image, (40, 40))
+standing_left_image = pygame.transform.scale(standing_left_image, (50, 50))
 jumping_right_image = pygame.transform.scale(jumping_right_image, (50, 50))
 jumping_left_image = pygame.transform.scale(jumping_left_image, (50, 50))
 block_img = pygame.transform.scale(block_img, (50, 50))
@@ -108,13 +112,17 @@ class Mario(pygame.sprite.Sprite):
         
         # Salto
         if keys[pygame.K_UP] and not self.is_jumping:
-            # Permitir hasta 2 saltos
-            if self.jump_count < 2:
-                if not is_below_block or self.jump_count > 0:
-                    jump_sound.play()
-                    self.is_jumping = True
-                    self.vel_y = self.jump_speed
-                    self.jump_count += 1 
+            # Permitir el primer salto
+            jump_sound.play()
+            self.is_jumping = True
+            self.vel_y = self.jump_speed
+            self.jump_count = 1
+        elif self.jump_count == 1:
+            # Permitir el segundo salto (doble salto)
+            jump_sound.play()
+            self.vel_y = self.jump_speed
+            self.jump_count += 1 
+            
         # Gravedad
         if self.is_jumping:
             # Aplica gravedad
@@ -165,14 +173,15 @@ class Mario(pygame.sprite.Sprite):
     def update_running_animation(self):
         # Cambiar la imagen de correr
         self.animation_timer += 1
-        # Cambiar cada 10 frames
-        if self.animation_timer >= 7:
-            self.running_index = (self.running_index + 1) % len(self.running_right_images)
+        # Cambiar cada 5 frames
+        if self.animation_timer >= 5:
+            self.running_index = (self.running_index + 1) % (len(self.running_right_images))
             if self.facing_right:
                 self.image = self.running_right_images[self.running_index]
             else:
                 # Usar imágenes para la izquierda
-                self.image = self.running_left_images[self.running_index]
+                self.running_index = (self.running_index + 1) % (len(self.running_left_images))
+                self.image = self.running_left_images[self.running_index]     
             self.animation_timer = 0
 
 # Clase enemigo
